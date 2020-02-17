@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ## Create a shuffler project assignator to assign developers that work at Icalia to projects
 ## 1. Every developer must team with two other members
 ## 2. Every developer has more or less the same amount of projects
@@ -6,8 +8,8 @@
 ## 5. The code at the bottom must run without change
 ## Hint: http://ruby-doc.org/core-2.2.0/Array.html#method-i-sort
 
-TEAM_MEMBERS = %w{ Walter Kevin Cejas Vov Lentes Scarlett Jesus Cesar Julian Luis }
-PROJECTS = %w{ Okudoc Datoz RTS Foresight Whales EstoyBien Sostener StropInsights TKING Vamonos }
+TEAM_MEMBERS = %w[Walter Kevin Cejas Vov Lentes Scarlett Jesus Cesar Julian Luis].freeze
+PROJECTS = %w[Okudoc Datoz RTS Foresight Whales EstoyBien Sostener StropInsights TKING Vamonos].freeze
 
 ## Your code starts here
 class Shuffler
@@ -28,9 +30,9 @@ class Shuffler
 
   # Crea un equipo con una cantidad dada de persona y usando una lista como base
   def make_team_with(amount, list)
-    team  = []
+    team = []
 
-    while team.size < amount do
+    while team.size < amount
       # Selecciona un miembro aleatoriamente
       index = rand(list.size)
       member = list[index]
@@ -48,8 +50,8 @@ class Shuffler
   # Asigna miembros a los proyectos
   def assign_projects
     # Crea el equipo con 3 miembros
-    team = make_team_with(3, members())
-    
+    team = make_team_with(3, members)
+
     PROJECTS.each do |item|
       # Genera un nuevo proyecto
       project = Project.new(item)
@@ -67,7 +69,7 @@ class Member
 
   def initialize(name)
     @name = name
-    @role = "developer"
+    @role = 'developer'
   end
 end
 
@@ -93,7 +95,7 @@ shuffler.members.each do |member|
   member.projects.each do |project|
     puts "== #{project.name} =="
     puts "Lead name: #{project.lead.name}"
-    puts "Members: "
+    puts 'Members: '
     project.members.each do |member|
       puts "#{member.name} with #{member.role} role"
     end
