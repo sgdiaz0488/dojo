@@ -10,6 +10,77 @@ TEAM_MEMBERS = %w{ Walter Kevin Cejas Vov Lentes Scarlett Jesus Cesar Julian Lui
 PROJECTS = %w{ Okudoc Datoz RTS Foresight Whales EstoyBien Sostener StropInsights TKING Vamonos }
 
 ## Your code starts here
+class Shuffler
+  # Devuelve un listado de miembros usando los nombres de TEAM_MEMBERS
+  def members
+    team = []
+
+    TEAM_MEMBERS.each do |item|
+      # Genera un nuevo miembro
+      member = Member.new(item)
+
+      # Añade el miembro al equipo
+      team << member
+    end
+
+    team
+  end
+
+  # Crea un equipo con una cantidad dada de persona y usando una lista como base
+  def make_team_with(amount, list)
+    team  = []
+
+    while team.size < amount do
+      # Selecciona un miembro aleatoriamente
+      index = rand(list.size)
+      member = list[index]
+
+      # Añade el miembro al equipo
+      team << member
+
+      # Valida que no se repita
+      team.uniq!
+    end
+
+    team
+  end
+
+  # Asigna miembros a los proyectos
+  def assign_projects
+    # Crea el equipo con 3 miembros
+    team = make_team_with(3, members())
+    
+    PROJECTS.each do |item|
+      # Genera un nuevo proyecto
+      project = Project.new(item)
+
+      # Define el líder del proyecto
+      project.lead = team.first
+    end
+  end
+end
+
+# Clase para construir un Miembro
+class Member
+  attr_reader :name
+  attr_reader :role
+
+  def initialize(name)
+    @name = name
+    @role = "developer"
+  end
+end
+
+# Clase para construir un Proyecto
+class Project
+  attr_reader :name
+  attr_accessor :lead
+  attr_accessor :members
+
+  def initialize(name)
+    @name = name
+  end
+end
 
 ## Your code ends here
 
