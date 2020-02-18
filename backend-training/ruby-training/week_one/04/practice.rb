@@ -9,6 +9,19 @@
 #  2.5 Each class should be able to fetch records with simple methods, look for the example class, at least 3 classes should be created,
 #   but you can be as creative as you want
 
+require 'httparty'
+
+def write_to(filename = 'tmp.html')
+  file = File.new(filename, 'w')
+  yield(file) if block_given?
+  file.close
+end
+
+response = HTTParty.get('https://github.com/r-argentina-programa/introduccion-a-js/blob/master/README.md')
+
+write_to 'readme.html' do |file|
+  file.write(response.body)
+end
 
 # ======
 # Example class for practice 2
