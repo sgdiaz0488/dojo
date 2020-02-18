@@ -83,5 +83,5 @@ end
 
 Country.all # => Returns an array of Country instances
 puts "The total of countries are: #{Country.total_of_countries}"
-puts Country.find_by_capital('Havana').inspect
+puts "Havana is the capital of: #{Country.find_by_capital('Havana').inspect}"
 puts "#{Country.total_speaking('ar')} are speaking arabe."
