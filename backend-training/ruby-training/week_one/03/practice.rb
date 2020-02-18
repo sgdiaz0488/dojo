@@ -7,57 +7,63 @@
 ## 4. Refactor every time you can
 ## 5. The code at the bottom must run without change
 ## Hint: http://ruby-doc.org/core-2.2.0/Array.html#method-i-sort
+require 'pry'
 
 TEAM_MEMBERS = %w[Walter Kevin Cejas Vov Lentes Scarlett Jesus Cesar Julian Luis].freeze
 PROJECTS = %w[Okudoc Datoz RTS Foresight Whales EstoyBien Sostener StropInsights TKING Vamonos].freeze
 
 ## Your code starts here
-class Shuffler
-  # Devuelve un listado de miembros usando los nombres de TEAM_MEMBERS
-  def members
-    team = []
+class Team
+  attr_accessor :members, :lead
 
-    TEAM_MEMBERS.each do |item|
-      # Genera un nuevo miembro
-      member = Member.new(item)
-
-      # Añade el miembro al equipo
-      team << member
-    end
-
-    team
+  def initialize(member_names, lead_name)
+    @members = member_names.map { |name| Member.new(name) }
+    @lead =  Member.new(lead_name)
   end
 
-  # Crea un equipo con una cantidad dada de persona y usando una lista como base
-  def make_team_with(amount, list)
-    team = []
+  def all_members
+    [@lead] + @members
+  end
 
-    while team.size < amount
-      # Selecciona un miembro aleatoriamente
-      index = rand(list.size)
-      member = list[index]
+  def assign_projects(projects)
+    all_members.each { |member| member.projects = projects }
+  end
+end
 
-      # Añade el miembro al equipo
-      team << member
+class Shuffler
+  def initialize
+    @teams = create_teams(TEAM_MEMBERS)
+  end
 
-      # Valida que no se repita
-      team.uniq!
+  def members
+    @teams.map(&:all_members).flatten
+  end
+
+  def create_teams(member_names)
+    lead_names = member_names.sample(3)
+    leftover_names = (member_names - lead_names)
+    teams = lead_names.map do |lead_name|
+      Team.new([leftover_names.pop, leftover_names.pop], lead_name)
     end
-
-    team
+    leftover_names.each { |member| teams[0].members << Member.new(member) }
+    teams
   end
 
   # Asigna miembros a los proyectos
   def assign_projects
-    # Crea el equipo con 3 miembros
-    team = make_team_with(3, members)
-
-    PROJECTS.each do |item|
-      # Genera un nuevo proyecto
-      project = Project.new(item)
-
-      # Define el líder del proyecto
-      project.lead = team.first
+    assigned_projects = []
+    team_index = 0
+    PROJECTS.each do |project_name|
+      team = @teams[team_index]
+      project = Project.new(project_name, team.lead, team.all_members)
+      assigned_projects << project
+      if assigned_projects.size == 2
+        team.assign_projects(assigned_projects)
+        assigned_projects = []
+        if (team_index += 1) > (@teams.size - 1)
+          team_index = 0
+        end
+      end
     end
   end
 end
@@ -66,10 +72,12 @@ end
 class Member
   attr_reader :name
   attr_reader :role
+  attr_accessor :projects
 
   def initialize(name)
     @name = name
-    @role = 'developer'
+    @role = %w[developer Designer].sample
+    @projects = []
   end
 end
 
@@ -79,8 +87,10 @@ class Project
   attr_accessor :lead
   attr_accessor :members
 
-  def initialize(name)
+  def initialize(name, lead, members)
     @name = name
+    @lead = lead
+    @members = members
   end
 end
 
