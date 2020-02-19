@@ -3,9 +3,9 @@
 # 1.Count how many times the letter a is repeated in the countries in the world
 
 # Your code starts here
-# relative_path_to_file = 'countries.txt'
-# countries_content = File.read(relative_path_to_file)
-# puts countries_content.count 'a'
+relative_path_to_file = 'countries.txt'
+countries_content = File.read(relative_path_to_file)
+puts countries_content.count 'a'
 
 # Your code ends here
 
