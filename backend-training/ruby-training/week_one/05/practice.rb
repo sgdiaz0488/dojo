@@ -20,18 +20,20 @@ puts countries_content.count 'a'
 # Transaction
 # Product
 # PaymentType
-#
-#The class names above are just simple examples, but you can use other ones
+# The class names above are just simple examples, but you can use other ones
+
 require 'csv'
+require 'date'
 
 class Report
+  
   def self.read_file
     relative_path_to_file = 'sales.csv'
 
     CSV.foreach(relative_path_to_file, headers: true) do |row|
       puts row
     end
-  end
+   end
 
   def self.total_of_sales
     sales = {}
