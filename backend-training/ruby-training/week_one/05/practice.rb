@@ -20,8 +20,8 @@ puts countries_content.count 'a'
 # Transaction
 # Product
 # PaymentType
-# The class names above are just simple examples, but you can use other ones
 
+# The class names above are just simple examples, but you can use other ones
 require 'csv'
 require 'date'
 
