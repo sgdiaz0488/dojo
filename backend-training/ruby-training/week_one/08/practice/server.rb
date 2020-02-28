@@ -11,6 +11,9 @@ require 'erb'
 require 'rack'
 require 'octokit'
 require 'github/markup'
+require_relative 'user'
+require_relative 'icaliers'
+require_relative 'module_user'
 
 # Your code starts here
 module Users
@@ -63,6 +66,28 @@ webapp = lambda { |_env|
 }
 
 Icaliers.export_users_csv
+
+# Rack::Handler::WEBrick
+# Webrick Server
+Rack::Handler::WEBrick.run webapp
+
+class Page
+  def render
+    ERB.new(File.read('./views/icaliers.erb')).result(binding)
+  end
+
+  def content
+    render do
+      Icaliers.get_users_from_csv
+    end
+  end
+end
+
+webapp = lambda { |_env|
+  ['200', { 'Content-Type' => 'text/html' }, [Page.new.content]]
+}
+
+# Icaliers.export_users_csv
 
 # Rack::Handler::WEBrick
 # Webrick Server
