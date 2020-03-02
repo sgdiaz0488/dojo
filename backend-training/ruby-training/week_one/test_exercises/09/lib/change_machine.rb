@@ -19,10 +19,12 @@ class ChangeMachine
   end
 
   def dispense_change
-    if @paid == @cost || (@paid - @cost) > 99 || @paid < @cost
+    amount = @paid - @cost
+    if @paid == @cost || amount > 199 || @paid < @cost
       'non-dispensing change machine'
     else
-      change(@paid - @cost)
+      amount = amount > 100 ? amount - 100 : amount
+      change(amount)
     end
   end
 
@@ -46,12 +48,10 @@ class ChangeMachine
   end
 
   def get_highest_coin(amount)
-    available_coins = [25, 10, 5, 1]
-    index = 0
-    coin = available_coins[index]
-    until amount >= coin
-      index += 1
-      coin = available_coins[index]
+    coin = 0
+    [25, 10, 5, 1].each do |c|
+      coin = c
+      return coin if coin <= amount
     end
     coin
   end
