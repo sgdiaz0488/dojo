@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require_relative '../lib/playing_card_deck'
 
 describe PlayingCardDeck do
   subject { deck }
   let(:deck) { PlayingCardDeck.new }
   let(:cards) { subject.cards }
-  let(:card_names) { subject.cards.map { |card| card.inspect }}
+  let(:card_names) { subject.cards.map(&:inspect) }
 
   describe '#initialize' do
     it 'should create a deck of playing cards' do
@@ -30,7 +32,7 @@ describe PlayingCardDeck do
     end
 
     it 'should deal 5-card poker hands' do
-      expect(subject.map { |hand| hand.count }).to eql [5, 5, 5]
+      expect(subject.map(&:count)).to eql [5, 5, 5]
     end
 
     it 'should deal unique hands' do
