@@ -22,21 +22,21 @@ describe Product do
   end
 
   it 'when read the reviews and reliability is strong' do
-    1.upto(15) do |i|
+    15.times do |i|
       product.add_review("Review #{i}")
     end
     expect(product.read_reviews).to eql 'strong'
   end
 
   it 'when read the reviews and reliability is okay' do
-    1.upto(8) do |i|
+    8.times do |i|
       product.add_review("Review #{i}")
     end
     expect(product.read_reviews).to eql 'okay'
   end
 
   it 'when read the reviews and reliability is weak' do
-    1.upto(3) do |i|
+    3.times do |i|
       product.add_review("Review #{i}")
     end
     expect(product.read_reviews).to eql 'weak'
