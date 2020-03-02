@@ -1,6 +1,6 @@
 class Order
   attr_reader :status
-  attr_accessor :total_products
+  attr_accessor :total_products, :discount
 
   def initialize
     @total_products = 0
@@ -22,5 +22,4 @@ class Order
   def check_out
     @status = "complete"
   end
-
 end
